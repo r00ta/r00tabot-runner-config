@@ -1,26 +1,36 @@
-git submodule update --init --recursive
-make snap-tree
+# Start the container first because it might take some seconds to be active. In the meantime we build the snap
 
-lxc launch ubuntu:22.04 maas-tester
-lxc file push -r dev-snap/ maas-tester/home/ubuntu
-lxc file push Makefile maas-tester/home/ubuntu/
-lxc file push utilities/connect-snap-interfaces  maas-tester/home/ubuntu/
-lxc exec maas-tester --user 0 -- apt-get update
-lxc exec maas-tester --user 0 -- apt-get install make -y 
-lxc exec maas-tester --user 0 --cwd /home/ubuntu/ -- snap try dev-snap/tree
-lxc exec maas-tester --user 0 --cwd /home/ubuntu/ -- ./connect-snap-interfaces
+lxc launch ubuntu:22.04 $CONTAINER_NAME
+lxc config device add $CONTAINER_NAME eth1 nic name=eth1 nictype=bridged parent=$CONTAINER_NAME
 
-lxc exec maas-tester --user 0 --cwd /home/ubuntu -- apt-get install postgresql -y 
-lxc exec maas-tester --user 113 -- psql -c "CREATE USER \"maasdb\" WITH ENCRYPTED PASSWORD 'maasdb'"
-lxc exec maas-tester --user 113 -- createdb -O "maasdb" "maasdb" 
-lxc exec maas-tester --user 0 --cwd /home/ubuntu -- sh -c "echo 'host    maasdb   maasdb    0/0     md5' >> /etc/postgresql/14/main/pg_hba.conf"
-lxc exec maas-tester --user 0 --cwd /home/ubuntu -- systemctl restart postgresql 
-IP_ADDRESS=$(lxc exec maas-tester --user 0 -- sh -c "ip addr show eth0")
-IP_ADDRESS=$(printf "$IP_ADDRESS" | grep 'inet\b' | awk '{print $2}' | cut -d/ -f1)
-lxc exec maas-tester --user 0 --cwd /home/ubuntu -- sh -c "maas init region+rack --database-uri 'postgres://maasdb:maasdb@localhost/maasdb'  --maas-url $IP_ADDRESS"
-lxc exec maas-tester --user 0 --cwd /home/ubuntu -- maas createadmin --username maas --password maas --email maas 
+sleep 10
+#git submodule update --init --recursive
+#make snap-tree
+lxc exec $CONTAINER_NAME --user 0 -- sh -c "echo 'Acquire::http::Proxy \"http://172.0.2.15:3129\";' | sudo tee /etc/apt/apt.conf.d/99proxy"
+
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- sh -c "printf \"
+network:
+    version: 2
+    ethernets:
+        eth1:
+            addresses:
+                - $SUBNET_PREFIX.0.1.2/24
+\" >> /etc/netplan/99-static-eth1.yaml"
+lxc exec $CONTAINER_NAME --user 0 -- netplan apply 
 
 
+lxc file push -r $MAAS_DIR/dev-snap/ $CONTAINER_NAME/home/ubuntu
+lxc file push $MAAS_DIR/Makefile $CONTAINER_NAME/home/ubuntu/
+lxc file push $MAAS_DIR/utilities/connect-snap-interfaces  $CONTAINER_NAME/home/ubuntu/
+lxc exec $CONTAINER_NAME --user 0 -- apt-get update
+lxc exec $CONTAINER_NAME --user 0 -- apt-get install make -y 
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- snap try dev-snap/tree
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- ./connect-snap-interfaces
 
-
- 
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- apt-get install postgresql -y 
+lxc exec $CONTAINER_NAME --user 113 -- psql -c "CREATE USER \"maasdb\" WITH ENCRYPTED PASSWORD 'maasdb'"
+lxc exec $CONTAINER_NAME --user 113 -- createdb -O "maasdb" "maasdb" 
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- sh -c "echo 'host    maasdb   maasdb    0/0     md5' >> /etc/postgresql/14/main/pg_hba.conf"
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- systemctl restart postgresql 
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- sh -c "maas init region+rack --database-uri 'postgres://maasdb:maasdb@localhost/maasdb'  --maas-url http://$SUBNET_PREFIX.0.1.2:5240/MAAS"
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- maas createadmin --username maas --password maas --email maas 

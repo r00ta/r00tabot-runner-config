@@ -10,6 +10,7 @@ lxc file pull -r maas-deb-builder/home/ubuntu/build-area/*.deb .
 lxc delete -f maas-deb-builder
 
 lxc launch ubuntu:22.04 maas-tester
+lxc config device add maas-tester eth1 nic name=eth1 nictype=bridged parent=maas-test
 lxc file push -r build-area maas-tester/home/ubuntu
 lxc exec maas-tester --user 0 --  add-apt-repository -y ppa:maas-committers/latest-deps
 lxc exec maas-tester --user 0 -- apt-get update
