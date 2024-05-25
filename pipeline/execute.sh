@@ -5,7 +5,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 . $SCRIPT_DIR/../utils/functions.sh
 
 maas_dir=""
-random_flag=0
+random_flag=""
 
 # Parse the arguments
 while [[ "$#" -gt 0 ]]; do
@@ -15,7 +15,7 @@ while [[ "$#" -gt 0 ]]; do
             shift 2
             ;;
         --random)
-            random_flag=1
+            random_flag="$3"
             shift 1
             ;;
         *)
@@ -32,8 +32,8 @@ if [ -z "$maas_dir" ]; then
 fi
 
 # If the --random flag is set, print a message (or perform some action)
-if [ $random_flag -eq 1 ]; then
-    echo "Random flag is set."
+if [ -z $random_flag ]; then
+    echo "Usage: $0 --maas_dir <directory> --random <randint(1,253)>"
 fi
 
 export SUBNET_PREFIX="$random_flag"
