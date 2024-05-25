@@ -5,38 +5,30 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 . $SCRIPT_DIR/../utils/functions.sh
 
 maas_dir=""
-random_flag=""
+random=""
 
-# Parse the arguments
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
+# Parse the command line arguments
+while [[ $# -gt 0 ]]
+do
+    case "$1" in
         --maas_dir)
             maas_dir="$2"
-            shift 2
+            shift # past argument
+            shift # past value
             ;;
         --random)
-            random_flag="$3"
-            shift 1
+            random="$2"
+            shift # past argument
+            shift # past value
             ;;
         *)
-            echo "Unknown parameter passed: $1"
+            echo "Unknown option $1"
             exit 1
             ;;
     esac
 done
 
-# Check if the --maas_dir argument was provided
-if [ -z "$maas_dir" ]; then
-    echo "Usage: $0 --maas_dir <directory> [--random]"
-    exit 1
-fi
-
-# If the --random flag is set, print a message (or perform some action)
-if [ -z $random_flag ]; then
-    echo "Usage: $0 --maas_dir <directory> --random <randint(1,253)>"
-fi
-
-export SUBNET_PREFIX="$random_flag"
+export SUBNET_PREFIX="$random"
 export MAC_1=$(get_mac)
 export MAC_2=$(get_mac)
 export MAAS_DIR="$maas_dir"
