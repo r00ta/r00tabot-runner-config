@@ -1,4 +1,8 @@
 lxc launch ubuntu:22.04 $CONTAINER_NAME
+
+# wait for container
+sleep 10 
+
 lxc file push -r $MAAS_DIR $CONTAINER_NAME/home/ubuntu/
 lxc exec $CONTAINER_NAME --cwd /home/ubuntu/ --user 0 -- apt-get update 
 lxc exec $CONTAINER_NAME --cwd /home/ubuntu/maas --user 1000 -- git submodule update --init --recursive
