@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# ENV VARIABLES REQUIRED:
+#
+# SUBNET_PREFIX: an integer between 1 and 253 that will be used to create a bridged network with such prefix and identify the runners
+# TYPE: deb or snap.
+
+
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 . $SCRIPT_DIR/../utils/functions.sh
@@ -34,5 +41,9 @@ export CONTAINER_NAME="maas-tester-$SUBNET_PREFIX"
 
 
 $SCRIPT_DIR/00-create-vms-and-networks.sh  
-$SCRIPT_DIR/01-snap-create.sh
+if [ "$TYPE" == "deb" ]; then
+    $SCRIPT_DIR/01-deb-create.sh
+else
+    $SCRIPT_DIR/01-snap-create.sh
+fi
 $SCRIPT_DIR/02-start-tests.sh
