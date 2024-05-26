@@ -19,7 +19,7 @@ network:
 lxc exec $CONTAINER_NAME --user 0 -- netplan apply 
 
 
-lxc file push -r $MAAS_DIR/dev-snap/ $CONTAINER_NAME/home/ubuntu
+lxc file push -r $MAAS_DIR/dev-snap/ $CONTAINER_NAME/home/ubuntu > /dev/null
 lxc file push $MAAS_DIR/Makefile $CONTAINER_NAME/home/ubuntu/
 lxc file push $MAAS_DIR/utilities/connect-snap-interfaces  $CONTAINER_NAME/home/ubuntu/
 lxc exec $CONTAINER_NAME --user 0 -- apt-get update
