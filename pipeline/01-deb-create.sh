@@ -38,8 +38,8 @@ sleep 5
 lxc config device add $CONTAINER_NAME eth1 nic name=eth1 nictype=bridged parent=$CONTAINER_NAME
 sleep 10
 lxc exec $CONTAINER_NAME --user 0 -- sh -c "echo 'Acquire::http::Proxy \"http://172.0.2.15:3129\";' | sudo tee /etc/apt/apt.conf.d/99proxy"
-lxc file push $SCRIPT_DIR/environment $CONTAINER_NAME/tmp
-lxc exec $CONTAINER_NAME --user 0 --cwd /tmp -- sh -c "cat /tmp/environment >> /etc/environment"
+lxc file push $SCRIPT_DIR/environment $CONTAINER_NAME/tmp/
+lxc exec $CONTAINER_NAME --user 0 --cwd /tmp/ -- sh -c "cat /tmp/environment >> /etc/environment"
 
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- sh -c "printf \"
 network:
