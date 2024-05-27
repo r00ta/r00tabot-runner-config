@@ -5,7 +5,7 @@ lxc launch ubuntu:22.04 $CONTAINER_NAME
 # wait for container
 sleep 10 
 
-lxc file push --user 1000 -r $MAAS_DIR $CONTAINER_NAME/home/ubuntu/ > /dev/null
+lxc file push --uid 1000 -r $MAAS_DIR $CONTAINER_NAME/home/ubuntu/ > /dev/null
 echo "Updating.."
 lxc exec $CONTAINER_NAME --cwd /home/ubuntu/ --user 0 -- apt-get update 
 lxc exec $CONTAINER_NAME --user 1000 -- git config --global --add safe.directory /home/ubuntu/maas
@@ -45,7 +45,7 @@ network:
 lxc exec $CONTAINER_NAME --user 0 -- netplan apply 
 
 echo "Uploading artifacts.."
-lxc file push --user 1000 -r $TMPDIR/build-area $CONTAINER_NAME/home/ubuntu > /dev/null
+lxc file push --uid 1000 -r $TMPDIR/build-area $CONTAINER_NAME/home/ubuntu > /dev/null
 rm -rf $TMPDIR
 
 echo "Installing MAAS.."
