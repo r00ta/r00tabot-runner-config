@@ -1,5 +1,8 @@
 # Start the container first because it might take some seconds to be active. In the meantime we build the snap
 
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 lxc launch ubuntu:22.04 $CONTAINER_NAME
 lxc config device add $CONTAINER_NAME eth1 nic name=eth1 nictype=bridged parent=$CONTAINER_NAME
 
@@ -7,6 +10,8 @@ git -C $MAAS_DIR submodule update --init --recursive
 (cd $MAAS_DIR && make snap-tree)
 
 lxc exec $CONTAINER_NAME --user 0 -- sh -c "echo 'Acquire::http::Proxy \"http://172.0.2.15:3129\";' | sudo tee /etc/apt/apt.conf.d/99proxy"
+lxc file push $SCRIPT_DIR/environment $CONTAINER_NAME/tmp
+lxc exec $CONTAINER_NAME --user 0 --cwd /tmp -- sh -c "cat /tmp/environment >> /etc/environment"
 
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- sh -c "printf \"
 network:
