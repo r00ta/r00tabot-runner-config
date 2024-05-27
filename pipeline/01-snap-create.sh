@@ -19,9 +19,9 @@ network:
 lxc exec $CONTAINER_NAME --user 0 -- netplan apply 
 
 
-lxc file push --user 1000 -r $MAAS_DIR/dev-snap/ $CONTAINER_NAME/home/ubuntu > /dev/null
-lxc file push $MAAS_DIR/Makefile $CONTAINER_NAME/home/ubuntu/
-lxc file push $MAAS_DIR/utilities/connect-snap-interfaces  $CONTAINER_NAME/home/ubuntu/
+lxc file push --uid 1000 -r $MAAS_DIR/dev-snap/ $CONTAINER_NAME/home/ubuntu > /dev/null
+lxc file push --uid 1000 $MAAS_DIR/Makefile $CONTAINER_NAME/home/ubuntu/
+lxc file push --uid 1000 $MAAS_DIR/utilities/connect-snap-interfaces  $CONTAINER_NAME/home/ubuntu/
 lxc exec $CONTAINER_NAME --user 0 -- apt-get update
 lxc exec $CONTAINER_NAME --user 0 -- apt-get install make -y 
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- snap try dev-snap/tree
