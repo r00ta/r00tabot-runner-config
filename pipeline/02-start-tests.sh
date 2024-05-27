@@ -2,6 +2,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 lxc exec $CONTAINER_NAME --user 0 -- snap install jq --classic
 lxc file push -r $SCRIPT_DIR/../tests $CONTAINER_NAME/home/ubuntu
+lxc exec $CONTAINER_NAME --cwd /home/ubuntu --user 0 -- chown -R ubuntu:ubuntu tests
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- chmod +x -R /home/ubuntu/tests
 lxc exec $CONTAINER_NAME --user 0 --cwd /tmp/ -- sh -c "printf \"\$(maas apikey --username maas)\" > api-key-file"
 
