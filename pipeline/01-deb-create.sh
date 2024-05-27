@@ -14,7 +14,7 @@ echo "Fetching submodules.."
 lxc exec $CONTAINER_NAME --cwd /home/ubuntu/maas --user 1000 -- git submodule update --init --recursive
 
 echo "Installing dependencies.."
-lxc exec $CONTAINER_NAME --cwd /home/ubuntu/maas --user 0 -- apt-get install make > /dev/null
+lxc exec $CONTAINER_NAME --cwd /home/ubuntu/maas --user 0 -- apt-get -y install make > /dev/null
 lxc exec $CONTAINER_NAME --cwd /home/ubuntu/maas --user 0 -- make install-dependencies > /dev/null
 
 echo "Making debs.."
