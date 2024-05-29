@@ -15,10 +15,10 @@ lxc exec $CONTAINER_NAME --user 0 --cwd /tmp/ -- sh -c "
 cat << EOF >> /etc/environment
     http_proxy=\"http://172.0.2.15:3129/\"
     https_proxy=\"http://172.0.2.15:3129/\"
-    no_proxy=\"localhost,127.0.0.1,localaddress,.localdomain.com,$SUBNET_PREFIX.0.2.2\"
+    no_proxy=\"localhost,127.0.0.1,localaddress,.localdomain.com,$SUBNET_PREFIX.0.1.2\"
     HTTP_PROXY=\"http://172.0.2.15:3129/\"
     HTTPS_PROXY=\"http://172.0.2.15:3129/\"
-    NO_PROXY=\"localhost,127.0.0.1,localaddress,.localdomain.com,$SUBNET_PREFIX.0.2.2\"
+    NO_PROXY=\"localhost,127.0.0.1,localaddress,.localdomain.com,$SUBNET_PREFIX.0.1.2\"
 EOF
 "
 
