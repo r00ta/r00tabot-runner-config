@@ -25,6 +25,7 @@ retry_until_success() {
 
 echo "Configuring MAAS.."
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
+maas admin maas set-config name=http_proxy value=http://172.0.2.15:3129/
 maas admin boot-resources import
 retry_until_success "maas admin boot-resources is-importing" "false"
 echo "Extracting primary rack.."
