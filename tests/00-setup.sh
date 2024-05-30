@@ -48,6 +48,6 @@ maas admin maas set-config name=upstream_dns value=8.8.8.8
 echo "Generaing ssh keys.."
 ssh-keygen -q -t rsa -N "" -f "/tmp/id_rsa"
 sudo chown ubuntu:ubuntu /tmp/id_rsa /tmp/id_rsa.pub
-sudo chmod 777 /tmp/id_rsa
-sudo chmod 777 /tmp/id_rsa.pub
+sudo chmod 600 /tmp/id_rsa
+sudo chmod 644 /tmp/id_rsa.pub
 maas admin sshkeys create key="$(cat /tmp/id_rsa.pub)"
