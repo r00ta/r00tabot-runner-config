@@ -19,15 +19,15 @@ retry_limit=300
 retry_interval=10
 
 while [ $retry_count -lt $retry_limit ]; do
-    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@$IP_ADDRESS -i /tmp/id_rsa id | grep ubuntu
+    ssh_result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@$IP_ADDRESS -i /tmp/id_rsa id 2>/dev/null)
 
-    if [ $? -ne 0 ]; then 
+    if [[ "$ssh_result" == *"ubuntu"*  ]]; then
+        echo "SSH login successful. User is 'ubuntu'."
+        exit 0
+    else
         echo "SSH login failed or user is not 'ubuntu'. Retrying..."
         sleep $retry_interval
         retry_count=$((retry_count + retry_interval))
-    else
-        echo "SSH login successful. User is 'ubuntu'."
-        exit 0
     fi
 done
 
