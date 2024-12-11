@@ -34,7 +34,7 @@ sleep 5
 
 echo "Creating test container.."
 
-lxc launch ubuntu:22.04 $CONTAINER_NAME
+lxc launch ubuntu:24.04 $CONTAINER_NAME
 sleep 5
 lxc config device add $CONTAINER_NAME eth1 nic name=eth1 nictype=bridged parent=$CONTAINER_NAME
 sleep 10
