@@ -2,7 +2,7 @@ set -x
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-lxc launch ubuntu:22.04 $CONTAINER_NAME
+lxc launch ubuntu:24.04 $CONTAINER_NAME
 
 # wait for container
 sleep 10 
