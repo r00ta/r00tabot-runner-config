@@ -3,7 +3,7 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-lxc launch ubuntu:22.04 $CONTAINER_NAME
+lxc launch ubuntu:24.04 $CONTAINER_NAME
 lxc config device add $CONTAINER_NAME eth1 nic name=eth1 nictype=bridged parent=$CONTAINER_NAME
 
 git -C $MAAS_DIR submodule update --init --recursive
