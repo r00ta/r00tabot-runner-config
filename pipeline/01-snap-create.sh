@@ -29,8 +29,8 @@ lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- ./connect-snap-interfac
 
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- apt-get update
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- apt-get install postgresql -y 
-lxc exec $CONTAINER_NAME --user 0 -- psql -c "CREATE USER \"maasdb\" WITH ENCRYPTED PASSWORD 'maasdb'"
-lxc exec $CONTAINER_NAME --user 0 -- createdb -O "maasdb" "maasdb" 
+lxc exec $CONTAINER_NAME --user 0 -- sudo -u postgres psql -c "CREATE USER \"maasdb\" WITH ENCRYPTED PASSWORD 'maasdb'"
+lxc exec $CONTAINER_NAME --user 0 -- sudo -u postgres createdb -O "maasdb" "maasdb" 
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- sh -c "echo 'host    maasdb   maasdb    0/0     md5' >> /etc/postgresql/16/main/pg_hba.conf"
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- systemctl restart postgresql 
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- sh -c "maas init region+rack --database-uri 'postgres://maasdb:maasdb@localhost/maasdb'  --maas-url http://$SUBNET_PREFIX.0.1.2:5240/MAAS"
