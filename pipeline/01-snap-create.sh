@@ -21,14 +21,10 @@ network:
 \" >> /etc/netplan/99-static-eth1.yaml"
 lxc exec $CONTAINER_NAME --user 0 -- netplan apply 
 
-
-lxc file push -r $MAAS_DIR/dev-snap/ $CONTAINER_NAME/home/ubuntu > /dev/null
-lxc exec $CONTAINER_NAME --cwd /home/ubuntu --user 0 -- chown -R ubuntu:ubuntu dev-snap
-lxc file push --uid 1000 $MAAS_DIR/Makefile $CONTAINER_NAME/home/ubuntu/
-lxc file push --uid 1000 $MAAS_DIR/utilities/connect-snap-interfaces  $CONTAINER_NAME/home/ubuntu/
-lxc exec $CONTAINER_NAME --user 0 -- apt-get update
-lxc exec $CONTAINER_NAME --user 0 -- apt-get install make -y 
-lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- snap try dev-snap/tree
+lxc file push $MAAS_DIR/dev-snap/maas.snap $CONTAINER_NAME/home/ubuntu
+lxc exec $CONTAINER_NAME --cwd /home/ubuntu --user 0 -- chown ubuntu:ubuntu maas.snap
+lxc file push --uid 1000 $MAAS_DIR/utilities/connect-snap-interfaces $CONTAINER_NAME/home/ubuntu/
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- snap install --dangerous maas.snap
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- ./connect-snap-interfaces
 
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- apt-get install postgresql -y 
