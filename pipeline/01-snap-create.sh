@@ -21,7 +21,7 @@ network:
 \" >> /etc/netplan/99-static-eth1.yaml"
 lxc exec $CONTAINER_NAME --user 0 -- netplan apply 
 
-lxc file push $MAAS_DIR/dev-snap/maas.snap $CONTAINER_NAME/home/ubuntu
+lxc file push $MAAS_DIR/dev-snap/maas.snap $CONTAINER_NAME/home/ubuntu/
 lxc exec $CONTAINER_NAME --cwd /home/ubuntu --user 0 -- chown ubuntu:ubuntu maas.snap
 lxc file push --uid 1000 $MAAS_DIR/utilities/connect-snap-interfaces $CONTAINER_NAME/home/ubuntu/
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- snap install --dangerous maas.snap
