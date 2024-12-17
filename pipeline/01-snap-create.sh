@@ -27,6 +27,7 @@ lxc file push --uid 1000 $MAAS_DIR/utilities/connect-snap-interfaces $CONTAINER_
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- snap install --dangerous maas.snap
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu/ -- ./connect-snap-interfaces
 
+lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- apt-get update
 lxc exec $CONTAINER_NAME --user 0 --cwd /home/ubuntu -- apt-get install postgresql -y 
 lxc exec $CONTAINER_NAME --user 0 -- psql -c "CREATE USER \"maasdb\" WITH ENCRYPTED PASSWORD 'maasdb'"
 lxc exec $CONTAINER_NAME --user 0 -- createdb -O "maasdb" "maasdb" 
