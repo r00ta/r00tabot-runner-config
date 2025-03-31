@@ -17,7 +17,7 @@ networks:
   project: default
 storage_pools:
 - config:
-    size: 150GiB
+    size: 30GiB
   description: ""
   name: default
   driver: zfs

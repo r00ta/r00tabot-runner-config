@@ -20,7 +20,7 @@ else
 fi
 
 echo "System ID is $MACHINE_SYSTEM_ID"
-maas admin machine update $MACHINE_SYSTEM_ID power_type=lxd power_parameters_power_address=$SUBNET_PREFIX.0.1.1 power_parameters_instance_name=vm01-$SUBNET_PREFIX power_parameters_password=fuffapassword
+maas admin machine update $MACHINE_SYSTEM_ID power_type=lxd power_parameters_power_address=10.0.1.1 power_parameters_instance_name=vm01 power_parameters_password=fuffapassword
 
 echo "Machine power parameters updated. Enlistement completed."
 echo "$MACHINE_SYSTEM_ID" > /tmp/vm_system_id
