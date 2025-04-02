@@ -9,6 +9,7 @@ script_dir_path=$(dirname "${BASH_SOURCE[0]}")
 echo "Logging in.."
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
 
+lxc start vm01
 MACHINE_SYSTEM_ID=$(get_first_system_id_with_timeout)
 echo "Machine has been enlisted!"
 

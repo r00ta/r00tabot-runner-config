@@ -6,13 +6,9 @@ exec_and_check() {
   fi
 }
 
-
-sh -c "printf \"\$(maas apikey --username maas)\" > /tmp/api-key-file"
-
 cd $SCRIPT_DIR/../tests/
 # Execute the commands and check for failures
 exec_and_check "./00-setup.sh"
-lxc start vm01
 if [ $? -ne 0 ]; then
     echo "Command 'lxc start vm01 failed"
     exit 1

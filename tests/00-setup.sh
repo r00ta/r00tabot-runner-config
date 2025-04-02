@@ -51,3 +51,5 @@ sudo chown ubuntu:ubuntu /tmp/id_rsa /tmp/id_rsa.pub
 sudo chmod 600 /tmp/id_rsa
 sudo chmod 644 /tmp/id_rsa.pub
 maas admin sshkeys create key="$(cat /tmp/id_rsa.pub)"
+
+maas apikey --username maas > /tmp/api-key-file
