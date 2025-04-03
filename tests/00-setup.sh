@@ -24,8 +24,12 @@ retry_until_success() {
 }
 
 echo "Configuring MAAS.."
-maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
-maas admin maas set-config name=http_proxy value=http://172.0.2.15:3129/
+sudo maas apikey --username maas > /tmp/api-key-file
+lxc config trust add --name maas > /tmp/lxd-token
+
+# MAAS might be slow at startup and return 502 here.
+retry_until_success "maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`"
+# maas admin maas set-config name=http_proxy value=http://172.0.2.15:3129/
 maas admin boot-resources import
 retry_until_success "maas admin boot-resources is-importing" "false"
 echo "Extracting primary rack.."
@@ -51,5 +55,3 @@ sudo chown ubuntu:ubuntu /tmp/id_rsa /tmp/id_rsa.pub
 sudo chmod 600 /tmp/id_rsa
 sudo chmod 644 /tmp/id_rsa.pub
 maas admin sshkeys create key="$(cat /tmp/id_rsa.pub)"
-
-maas apikey --username maas > /tmp/api-key-file

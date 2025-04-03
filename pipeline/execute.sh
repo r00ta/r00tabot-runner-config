@@ -26,9 +26,7 @@ if [ -z "$maas_dir" ]; then
 fi
 
 export MAAS_DIR="$maas_dir"
-$SCRIPT_DIR/000-setup-machine.sh
-$SCRIPT_DIR/001-setup-lxd.sh
-$SCRIPT_DIR/002-create-vms-and-networks.sh
+$SCRIPT_DIR/00-setup-machine.sh
 if [ "$TYPE" == "deb" ]; then
     $SCRIPT_DIR/01-deb-create.sh
 else
