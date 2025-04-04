@@ -29,8 +29,8 @@ lxc config trust add --name maas -q > /tmp/lxd-token
 
 # MAAS might be slow at startup and return 502 here.
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
-maas admin maas set-config name="enable_http_proxy" value=True
-maas admin maas set-config name="http_proxy" value="http://172.0.2.17:8000"
+maas admin maas set-config name=enable_http_proxy value=True
+maas admin maas set-config name=http_proxy value=http://172.0.2.17:8000
 
 # Use local mirror
 maas admin boot-resources stop-import
