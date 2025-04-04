@@ -31,6 +31,8 @@ lxc config trust add --name maas -q > /tmp/lxd-token
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
 
 # Use local mirror
+maas admin boot-resources stop-import
+
 maas admin boot-sources create keyring_filename=/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg url=http://172.0.2.17/maas/images/ephemeral-v3/stable/
 maas admin boot-sources delete 1
 maas admin boot-resources import
