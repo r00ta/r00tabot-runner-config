@@ -29,8 +29,12 @@ lxc config trust add --name maas -q > /tmp/lxd-token
 
 # MAAS might be slow at startup and return 502 here.
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
-# maas admin maas set-config name=http_proxy value=http://172.0.2.15:3129/
+
+# Use local mirror
+maas admin boot-sources create keyring_filename=/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg url=http://172.0.2.17/maas/images/ephemeral-v3/stable/
+maas admin boot-sources delete 1
 maas admin boot-resources import
+
 retry_until_success "maas admin boot-resources is-importing" "false"
 echo "Extracting primary rack.."
 export PRIMARY_RACK=$(maas admin rack-controllers read | jq -r ".[] | .system_id")
