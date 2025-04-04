@@ -8,7 +8,6 @@ sudo snap install jq --classic
 
 echo "Installing LXD.."
 sudo snap install --channel=latest/stable lxd
-lxc config set core.proxy_http="http://172.0.2.17:8000/"
 
 echo "Configuring LXD.."
 cat <<EOF | sudo lxd init --preseed
