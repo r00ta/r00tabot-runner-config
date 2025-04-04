@@ -12,6 +12,7 @@ sudo maas init region+rack --database-uri maas-test-db:///  --maas-url http://10
 sudo maas createadmin --username maas --password maas --email maas
 
 printf "Waiting for MAAS to be up and running.."
+sleep 30
 while true; do
     status=$(curl -s -o /dev/null -w "%{http_code}" http://10.0.1.1:5240/MAAS/a/openapi.json)
     if [ "$status" -eq 200 ]; then
