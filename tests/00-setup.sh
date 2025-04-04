@@ -25,10 +25,10 @@ retry_until_success() {
 
 echo "Configuring MAAS.."
 sudo maas apikey --username maas > /tmp/api-key-file
-lxc config trust add --name maas > /tmp/lxd-token
+lxc config trust add --name maas -q > /tmp/lxd-token
 
 # MAAS might be slow at startup and return 502 here.
-retry_until_success "maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`"
+maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
 # maas admin maas set-config name=http_proxy value=http://172.0.2.15:3129/
 maas admin boot-resources import
 retry_until_success "maas admin boot-resources is-importing" "false"
