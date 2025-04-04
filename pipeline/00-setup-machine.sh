@@ -8,7 +8,7 @@ sudo snap install jq --classic
 
 echo "Installing LXD.."
 sudo snap install --channel=latest/stable lxd
-sudo adduser runner lxd
+sudo usermod -a -G lxd runner
 newgrp lxd
 
 echo "Configuring LXD.."
