@@ -31,7 +31,7 @@ lxc config trust add --name maas -q > /tmp/lxd-token
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
 
 # Use local mirror if it's up and running
-if ping -c 1 172.0.2.17 &> /dev/null; then
+if ping -c 1 172.0.2.17 | grep -q "1 received"; then
   maas admin maas set-config name=enable_http_proxy value=True
   maas admin maas set-config name=http_proxy value=http://172.0.2.17:8000
   maas admin boot-resources stop-import
