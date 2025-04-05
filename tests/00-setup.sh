@@ -36,7 +36,7 @@ if ping -c 1 172.0.2.17 &> /dev/null; then
   maas admin maas set-config name=http_proxy value=http://172.0.2.17:8000
   maas admin boot-resources stop-import
   maas admin boot-sources create keyring_filename=/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg url=http://172.0.2.17/maas/images/ephemeral-v3/stable/
-  maas admin boot-sources delete 1
+  maas admin boot-source delete 1
 fi
 
 maas admin boot-resources import
