@@ -2,6 +2,31 @@
 
 set -x
 
+retry_until_success_contains() {
+  local maas_command="$1"
+  local status_to_check="$2"
+  local max_wait_time=600
+  local sleep_interval=10
+  local elapsed_time=0
+
+  while [ $elapsed_time -lt $max_wait_time ]; do
+    output=$(eval "$maas_command" 2>&1)
+    echo "$output"
+
+    if echo "$output" | grep -q "$status_to_check"; then
+      echo "Success: Found expected output."
+      return 0
+    fi
+
+    echo "Waiting... ($elapsed_time/$max_wait_time seconds elapsed)"
+    sleep $sleep_interval
+    elapsed_time=$((elapsed_time + sleep_interval))
+  done
+
+  echo "Timeout reached. Desired output not found."
+  return 1
+}
+
 retry_until_success() {
   local maas_command="$1"
   local status_to_check="$2"
@@ -28,7 +53,7 @@ sudo maas apikey --username maas > /tmp/api-key-file
 lxc config trust add --name maas -q > /tmp/lxd-token
 
 # MAAS might be slow at startup and return 502 here.
-maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
+retry_until_success_contains "maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`" "You are now logged in to the MAAS server at"
 
 # Use local mirror if it's up and running
 if ping -c 1 172.0.2.17 | grep -q "1 received"; then
