@@ -62,6 +62,7 @@ if ping -c 1 172.0.2.161 | grep -q "1 received"; then
   maas admin boot-resources stop-import
   maas admin boot-sources create keyring_filename=/snap/maas/current/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg url=http://172.0.2.161/maas/images/ephemeral-v3/stable/
   maas admin boot-source delete 1
+  maas admin boot-source-selections create 2 os=ubuntu release=noble arches=amd64 subarches="*" labels="*" 
 fi
 
 maas admin boot-resources import
