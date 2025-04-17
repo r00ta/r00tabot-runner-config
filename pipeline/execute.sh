@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -ex
 
 # Resolve the directory this script is in
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -12,30 +12,24 @@ usage() {
 
 # Parse arguments
 parse_args() {
-    local args=("$@")
-    while [[ ${#args[@]} -gt 0 ]]; do
-        case "${args[0]}" in
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
             --maas_dir)
-                MAAS_DIR="${args[1]:-}"
-                [[ -z "$MAAS_DIR" ]] && usage
+                MAAS_DIR="${2:-}"
+                if [[ -z "$MAAS_DIR" ]]; then
+                    usage
+                fi
                 shift 2
                 ;;
             *)
-                echo "Unknown parameter passed: ${args[0]}"
+                echo "Unknown parameter passed: $1"
                 usage
                 ;;
         esac
     done
 }
 
-
-run_install() {
-    if [[ "$TYPE" == "deb" ]]; then
-        "$SCRIPT_DIR/02-deb-install.sh"
-    else
-        "$SCRIPT_DIR/02-snap-install.sh"
-    fi
-}
+# Cleanup based on TYPE
 run_cleanup() {
     if [[ "$TYPE" == "deb" ]]; then
         "$SCRIPT_DIR/99-deb-cleanup.sh"
@@ -46,7 +40,6 @@ run_cleanup() {
 
 # Run a test suite and cleanup afterward
 run_test() {
-    run_install
     local test_script="$1"
     "$SCRIPT_DIR/../tests/$test_script/execute.sh"
     run_cleanup
@@ -66,9 +59,17 @@ main() {
         "$SCRIPT_DIR/01-snap-create.sh"
     fi
 
+    # Install
+    if [[ "$TYPE" == "deb" ]]; then
+        "$SCRIPT_DIR/02-deb-install.sh"
+    else
+        "$SCRIPT_DIR/02-snap-install.sh"
+    fi
+
     # Run tests
     run_test "00_machine_lifecycle"
     run_test "01_vault"
+    run_test "02_chupa"
 }
 
 main "$@"
