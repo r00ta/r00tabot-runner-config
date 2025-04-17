@@ -1,9 +1,9 @@
 #! /bin/bash
 
-set -x
+set -ex
 
 script_dir_path=$(dirname "${BASH_SOURCE[0]}")
-. ${script_dir_path}/common.sh
+. ${script_dir_path}/../common.sh
 
 echo "Logging in.."
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
