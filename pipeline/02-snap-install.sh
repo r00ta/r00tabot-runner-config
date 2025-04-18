@@ -2,6 +2,7 @@
 set -ex 
 
 echo "Installing MAAS.."
+cd $MAAS_DIR
 sudo snap install maas-test-db
 sudo snap install --dangerous dev-snap/maas.snap
 utilities/connect-snap-interfaces
