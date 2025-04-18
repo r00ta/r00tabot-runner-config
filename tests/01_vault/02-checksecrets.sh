@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+script_dir_path=$(dirname "${BASH_SOURCE[0]}")
+. ${script_dir_path}/../common.sh
+
 set -ex
 
 echo "Logging in.."
