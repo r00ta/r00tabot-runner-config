@@ -9,9 +9,9 @@ exec_and_check() {
 }
 
 # Execute the commands and check for failures
-exec_and_check "../00-setup.sh"
-exec_and_check "./01-setupvault.sh"
-exec_and_check "./02-checksecrets.sh"
-exec_and_check "./03-cleanup.sh"
+exec_and_check "$SCRIPT_DIR/../00-setup.sh"
+exec_and_check "$SCRIPT_DIR/01-setupvault.sh"
+exec_and_check "$SCRIPT_DIR/02-checksecrets.sh"
+exec_and_check "$SCRIPT_DIR/03-cleanup.sh"
 
 

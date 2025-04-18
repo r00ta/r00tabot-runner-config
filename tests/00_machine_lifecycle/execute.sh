@@ -9,10 +9,10 @@ exec_and_check() {
 }
 
 # Execute the commands and check for failures
-exec_and_check "../00-setup.sh"
-exec_and_check "./01-enlist.sh"
-exec_and_check "./02-commission.sh"
-exec_and_check "./03-deploy.sh"
-exec_and_check "./04-ssh.sh"
-exec_and_check "./05-release.sh"
+exec_and_check "$SCRIPT_DIR/../00-setup.sh"
+exec_and_check "$SCRIPT_DIR/01-enlist.sh"
+exec_and_check "$SCRIPT_DIR/02-commission.sh"
+exec_and_check "$SCRIPT_DIR/03-deploy.sh"
+exec_and_check "$SCRIPT_DIR/04-ssh.sh"
+exec_and_check "$SCRIPT_DIR/05-release.sh"
 
