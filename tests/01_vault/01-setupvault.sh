@@ -2,6 +2,9 @@
 
 set -ex
 
+script_dir_path=$(dirname "${BASH_SOURCE[0]}")
+. ${script_dir_path}/../common.sh
+
 # CONFIGURATION
 VAULT_ADDR="http://127.0.0.1:8200"
 POLICY_NAME="maas"
