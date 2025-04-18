@@ -1,9 +1,9 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 exec_and_check() {
-  sh -c "$1"
+  "$@"
   if [ $? -ne 0 ]; then
-    echo "Command '$1' failed"
+    echo "Command '$*' failed"
     exit 1
   fi
 }
