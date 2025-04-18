@@ -65,7 +65,6 @@ main() {
         "$SCRIPT_DIR/01-snap-create.sh"
     fi
 
-    # Run tests
     run_test "00_machine_lifecycle"
     run_test "01_vault"
     run_test "02_chupa"
