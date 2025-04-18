@@ -1,6 +1,6 @@
 # !/bin/bash
 
-set -ex
+set -x
 
 script_dir_path=$(dirname "${BASH_SOURCE[0]}")
 . ${script_dir_path}/common.sh
