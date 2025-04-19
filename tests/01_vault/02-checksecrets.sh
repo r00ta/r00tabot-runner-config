@@ -13,7 +13,7 @@ echo "Setting maas_auto_ipmi_k_g_bmc_key configuration.."
 maas admin maas set-config name=maas_auto_ipmi_k_g_bmc_key value=0x0000000000000000000000000000000000000000
 
 echo "Retrieving maas_auto_ipmi_k_g_bmc_key configuration.."
-VALUE=$(maas $MAAS_PROFILE maas get-config name=maas_auto_ipmi_k_g_bmc_key)
+VALUE=$(maas admin maas get-config name=maas_auto_ipmi_k_g_bmc_key)
 echo "$VALUE"
 if [[ "$VALUE" != "0x0000000000000000000000000000000000000000" ]]; then
   echo "❌ Config value does not match expected value."
