@@ -4,7 +4,7 @@
 script_dir_path=$(dirname "${BASH_SOURCE[0]}")
 . ${script_dir_path}/../common.sh
 
-set -ex
+set -x
 
 echo "Logging in.."
 retry_until_success_contains "maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`" "You are now logged in to the MAAS server at"
