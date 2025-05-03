@@ -6,7 +6,7 @@ script_dir_path=$(dirname "${BASH_SOURCE[0]}")
 . ${script_dir_path}/common.sh
 
 echo "Configuring MAAS.."
-sudo maas apikey --username maas > /tmp/api-key-file
+sudo maas apikey --username admin > /tmp/api-key-file
 lxc config trust add --name maas -q > /tmp/lxd-token
 
 # MAAS might be slow at startup and return 502 here.
