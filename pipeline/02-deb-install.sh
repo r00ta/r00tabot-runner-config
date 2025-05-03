@@ -4,7 +4,7 @@ cd $MAAS_DIR
 
 echo "Installing MAAS.."
 sudo apt install -y ../build-area/*.deb
-sudo maas createadmin --username maas --password maas --email maas
+sudo maas createadmin --username admin --password admin --email admin@example.com
 
 printf "Waiting for MAAS to be up and running.."
 sleep 15
